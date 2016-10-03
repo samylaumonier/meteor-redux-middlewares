@@ -7,7 +7,7 @@ Redux middlewares that allow you to sync the store with Mongo and any reactive s
 
 # Installation
 
-`meteor add samy:react-meteor-middlewares`
+`meteor add samy:redux-middlewares`
 
 
 # Example of use
