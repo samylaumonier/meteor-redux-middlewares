@@ -1,6 +1,6 @@
 Package.describe({
   name: 'samy:redux-middlewares',
-  version: '1.0.0',
+  version: '1.0.1',
   summary: 'Redux middlewares that allow you to sync the store with Mongo and any reactive sources.',
   git: 'https://github.com/samybob1/meteor-redux-middlewares',
   documentation: 'README.md'
