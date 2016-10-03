@@ -209,3 +209,8 @@ Then in your reducer, you can access to the extra data by using the `data` attri
     }
   }
 ```
+
+
+# Credits
+
+Based on the work of [Gildas Garcia (djhi)](https://github.com/djhi) on his [My-Nutrition project](https://github.com/djhi/my-nutrition/tree/master/app/client/middlewares).
