@@ -1,5 +1,5 @@
-import subscriptionsMiddleware from '.lib/middlewares/subscriptions';
-import sourcesMiddleware from '.lib/middlewares/sources';
+import subscriptionsMiddleware from './subscriptions';
+import sourcesMiddleware from './sources';
 
 const middlewares = [
   subscriptionsMiddleware,
