@@ -1,7 +1,7 @@
 {
   "name": "meteor-redux-middlewares",
   "version": "0.1.0",
-  "description": "Redux middlewares to sync store with meteor reactive sources.",
+  "description": "Middlewares to sync meteor reactive sources with redux store",
   "main": "index.js",
   "repository": {
     "url": "git@github.com:Koleok/meteor-redux-middlewares.git",
@@ -9,7 +9,40 @@
   },
   "author": "Samy Laumonier <159024@supinfo.com>",
   "license": "MIT",
+  "keywords": [
+    "action",
+    "meteor",
+    "middleware",
+    "reactive",
+    "redux",
+    "subscription"
+    "tracker",
+  ],
   "dependencies": {
     "std-tracker": "studiointeract/tracker"
+  },
+  "scripts": {
+    "clean": "./node_modules/.bin/rimraf lib",
+    "build": "npm run clean && ./node_modules/.bin/babel src -d lib --copy-files",
+    "watch": "watch 'npm run build' src/ -d"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.18.0",
+    "babel-core": "^6.18.0",
+    "babel-eslint": "^7.1.0",
+    "babel-polyfill": "^6.16.0",
+    "babel-preset-es2015": "^6.18.0",
+    "babel-preset-stage-2": "^6.18.0",
+    "babel-register": "^6.18.0",
+    "eslint": "^3.8.1",
+    "eslint-plugin-babel": "^3.3.0",
+    "eslint-plugin-import": "^2.0.1",
+    "rimraf": "^2.5.4"
+  },
+  "babel": {
+    "presets": [
+      "es2015",
+      "stage-2"
+    ]
   }
 }
