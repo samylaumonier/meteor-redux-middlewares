@@ -1,10 +1,8 @@
 /* eslint-disable arrow-parens */
-import { Tracker } from 'std-tracker';
-
 const subscriptions = {};
 const computations = {};
 
-export default store => next => action => {
+export default Tracker => store => next => action => {
   if (action.meteor && action.meteor.subscribe) {
     // setTimeout is fixing this bug: https://github.com/meteor/react-packages/issues/99
     setTimeout(() => {

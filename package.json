@@ -18,9 +18,6 @@
     "subscription",
     "tracker"
   ],
-  "dependencies": {
-    "std-tracker": "studiointeract/tracker"
-  },
   "scripts": {
     "clean": "./node_modules/.bin/rimraf lib",
     "build": "npm run clean && ./node_modules/.bin/babel src -d lib --copy-files",
