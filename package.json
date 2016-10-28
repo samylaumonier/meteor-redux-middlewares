@@ -2,7 +2,7 @@
   "name": "meteor-redux-middlewares",
   "version": "0.1.0",
   "description": "Middlewares to sync meteor reactive sources with redux store",
-  "main": "index.js",
+  "main": "lib/index.js",
   "repository": {
     "url": "git@github.com:Koleok/meteor-redux-middlewares.git",
     "type": "git"
