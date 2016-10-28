@@ -15,8 +15,8 @@
     "middleware",
     "reactive",
     "redux",
-    "subscription"
-    "tracker",
+    "subscription",
+    "tracker"
   ],
   "dependencies": {
     "std-tracker": "studiointeract/tracker"
