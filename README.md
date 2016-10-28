@@ -7,7 +7,11 @@ Redux middlewares that allow you to sync the store with Mongo and any reactive s
 
 # Installation
 
-`meteor add samy:redux-middlewares`
+`npm i meteor-redux-middlewares`
+
+or even better 😉
+
+`yarn add meteor-redux-middlewares`
 
 
 # Example of use
@@ -19,7 +23,7 @@ All the following code is available on the [demo repository](https://github.com/
 
 ```js
   // File '/imports/store/index.js'
-  import { sources, subscriptions } from 'meteor/samy:redux-middlewares';
+  import { sources, subscriptions } from 'meteor-redux-middlewares';
 
   import { applyMiddleware, createStore, compose } from 'redux';
 
