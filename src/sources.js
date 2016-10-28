@@ -3,7 +3,7 @@
 const computations = {};
 
 export default Tracker => store => next => action => {
-  if (!action.meteor || action.meteor.subscribe || !action.meteor.ge) {
+  if (!action.meteor || action.meteor.subscribe || !action.meteor.get) {
     return next(action);
   }
 
