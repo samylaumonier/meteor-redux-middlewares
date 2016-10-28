@@ -1,0 +1,15 @@
+{
+  "name": "meteor-redux-middlewares",
+  "version": "0.1.0",
+  "description": "Redux middlewares to sync store with meteor reactive sources.",
+  "main": "index.js",
+  "repository": {
+    "url": "git@github.com:Koleok/meteor-redux-middlewares.git",
+    "type": "git"
+  },
+  "author": "Samy Laumonier <159024@supinfo.com>",
+  "license": "MIT",
+  "dependencies": {
+    "std-tracker": "studiointeract/tracker"
+  }
+}
