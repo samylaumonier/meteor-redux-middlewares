@@ -1,9 +1,9 @@
-import { Tracker } from 'meteor/tracker';
-
+/* eslint-disable arrow-parens */
+/* eslint-disable consistent-return */
 const subscriptions = {};
 const computations = {};
 
-export const middleware = store => next => action => {
+export default Tracker => store => next => action => {
   if (!action.meteor || !action.meteor.subscribe) {
     return next(action);
   }
@@ -32,8 +32,8 @@ export const middleware = store => next => action => {
       }
 
       store.dispatch({
-        type: `${action.type}_READY`,
         ready,
+        type: `${action.type}_READY`,
         data: action.meteor.onReadyData
           ? action.meteor.onReadyData()
           : null,

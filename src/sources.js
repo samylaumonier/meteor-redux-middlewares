@@ -1,8 +1,8 @@
-import { Tracker } from 'meteor/tracker';
-
+/* eslint-disable arrow-parens */
+/* eslint-disable consistent-return */
 const computations = {};
 
-export const middleware = store => next => action => {
+export default Tracker => store => next => action => {
   if (!action.meteor || action.meteor.subscribe || !action.meteor.get) {
     return next(action);
   }

@@ -7,7 +7,11 @@ Redux middlewares that allow you to sync the store with Mongo and any reactive s
 
 # Installation
 
-`meteor add samy:redux-middlewares`
+`npm i meteor-redux-middlewares`
+
+or even better 😉
+
+`yarn add meteor-redux-middlewares`
 
 
 # Example of use
@@ -19,8 +23,8 @@ All the following code is available on the [demo repository](https://github.com/
 
 ```js
   // File '/imports/store/index.js'
-  import { sources, subscriptions } from 'meteor/samy:redux-middlewares';
-
+  import { Tracker } from 'meteor/tracker';
+  import createReactiveMiddleware from 'meteor-redux-middlewares';
   import { applyMiddleware, createStore, compose } from 'redux';
 
   // Of course, you can use other middlewares as well
@@ -28,6 +32,16 @@ All the following code is available on the [demo repository](https://github.com/
   import createLogger from 'redux-logger';
 
   import rootReducer from '/imports/reducers';
+
+  // We use an injection pattern to avoid any direct dependency on the meteor
+  // build tool, or version of tracker within the package.
+  //
+  // This way you should be able to use your meteor version, a community npm
+  // version, the future extracted official mdg package etc...
+  const {
+    sources,
+    subscriptions,
+  } = createReactiveMiddleware(Tracker);
 
   const store = createStore(rootReducer, compose(
     applyMiddleware(sources, subscriptions, thunk, logger)
