@@ -15,29 +15,35 @@ export default Tracker => store => next => action => {
 
       computations[subscriptionId].stop();
       subscriptions[action.type].stop();
+      store.dispatch({
+        type: `${action.type}_STOPPED`,
+        data: null,
+      });
     }
 
-    const subscription = action.meteor.subscribe();
-    const subscriptionId = subscription.subscriptionId;
+    if (!action.subscription.stop) {
+      const subscription = action.meteor.subscribe();
+      const subscriptionId = subscription.subscriptionId;
 
-    subscriptions[action.type] = subscription;
-    computations[subscriptionId] = Tracker.autorun(() => {
-      const ready = subscription.ready();
+      subscriptions[action.type] = subscription;
+      computations[subscriptionId] = Tracker.autorun(() => {
+        const ready = subscription.ready();
 
-      if (ready) {
+        if (ready) {
+          store.dispatch({
+            type: `${action.type}_CHANGED`,
+            data: action.meteor.get(),
+          });
+        }
+
         store.dispatch({
-          type: `${action.type}_CHANGED`,
-          data: action.meteor.get(),
+          ready,
+          type: `${action.type}_READY`,
+          data: action.meteor.onReadyData
+            ? action.meteor.onReadyData()
+            : null,
         });
-      }
-
-      store.dispatch({
-        ready,
-        type: `${action.type}_READY`,
-        data: action.meteor.onReadyData
-          ? action.meteor.onReadyData()
-          : null,
       });
-    });
+    }
   }, 0);
 };
