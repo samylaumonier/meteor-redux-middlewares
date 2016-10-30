@@ -1,10 +1,8 @@
-.nyc_output/
-config/
-coverage/
 src/
-test/
-.babelrc
-.editorconfig
+
 .eslintrc
-.flowconfig
-.travis.yml
+.eslintignore
+
+# Meteor
+package.js
+.versions

@@ -1040,6 +1040,10 @@ eslint:
     text-table "~0.2.0"
     user-home "^2.0.0"
 
+eslint-config-airbnb-base@^9.0.0:
+  version "9.0.0"
+  resolved "https://registry.yarnpkg.com/eslint-config-airbnb-base/-/eslint-config-airbnb-base-9.0.0.tgz#03e135562aa6c4d0d9f1bbda96d901326bf58ad2"
+
 eslint-import-resolver-node@^0.2.0:
   version "0.2.3"
   resolved "https://registry.yarnpkg.com/eslint-import-resolver-node/-/eslint-import-resolver-node-0.2.3.tgz#5add8106e8c928db2cba232bcd9efa846e3da16c"
