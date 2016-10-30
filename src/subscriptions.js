@@ -21,29 +21,27 @@ export default Tracker => store => next => action => {
       });
     }
 
-    if (!action.subscription.stop) {
-      const subscription = action.meteor.subscribe();
-      const subscriptionId = subscription.subscriptionId;
+    const subscription = action.meteor.subscribe();
+    const subscriptionId = subscription.subscriptionId;
 
-      subscriptions[action.type] = subscription;
-      computations[subscriptionId] = Tracker.autorun(() => {
-        const ready = subscription.ready();
+    subscriptions[action.type] = subscription;
+    computations[subscriptionId] = Tracker.autorun(() => {
+      const ready = subscription.ready();
 
-        if (ready) {
-          store.dispatch({
-            type: `${action.type}_CHANGED`,
-            data: action.meteor.get(),
-          });
-        }
-
+      if (ready) {
         store.dispatch({
-          ready,
-          type: `${action.type}_READY`,
-          data: action.meteor.onReadyData
+          type: `${action.type}_CHANGED`,
+          data: action.meteor.get(),
+        });
+      }
+
+      store.dispatch({
+        ready,
+        type: `${action.type}_READY`,
+        data: action.meteor.onReadyData
             ? action.meteor.onReadyData()
             : null,
-        });
       });
-    }
+    });
   }, 0);
 };
