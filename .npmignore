@@ -6,3 +6,6 @@ src/
 # Meteor
 package.js
 .versions
+
+# WebStorm
+.idea/
