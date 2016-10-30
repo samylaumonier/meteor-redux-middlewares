@@ -235,4 +235,5 @@ Then in your reducer, you can access to the extra data by using the `data` attri
 
 # Credits
 
-Based on the work of [Gildas Garcia (djhi)](https://github.com/djhi) on his [My-Nutrition project](https://github.com/djhi/my-nutrition/tree/master/app/client/middlewares).
+Based on the work of [Gildas Garcia (@djhi)](https://github.com/djhi) on his [My-Nutrition project](https://github.com/djhi/my-nutrition/tree/master/app/client/middlewares).
+Thanks to [Kyle Chamberlain (@Koleok)](https://github.com/Koleok) for his [contribution](https://github.com/samybob1/meteor-redux-middlewares/commits/master?author=Koleok).
