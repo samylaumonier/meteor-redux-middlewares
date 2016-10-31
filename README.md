@@ -69,13 +69,11 @@ All the following code is available on the [demo repository](https://github.com/
   export const USER_CHANGED = 'USER_CHANGED';
 
   export function loadUser() {
-    return dispatch => {
-      dispatch({
-        type: USER,
-        meteor: {
-          get: () => Meteor.user() || {},
-        },
-      });
+    return {
+      type: USER,
+      meteor: {
+        get: () => Meteor.user() || {},
+      },
     };
   }
 ```
@@ -93,14 +91,12 @@ This action will automatically be intercepted by the `sources` middleware. Your 
   export const HOME_POSTS_SUBSCRIPTION_CHANGED = 'HOME_POSTS_SUBSCRIPTION_CHANGED';
 
   export function loadHomePosts() {
-    return dispatch => {
-      dispatch({
-        type: HOME_POSTS_SUBSCRIPTION,
-        meteor: {
-          subscribe: () => Meteor.subscribe('home.posts'),
-          get: () => Posts.find().fetch(),
-        },
-      });
+    return {
+      type: HOME_POSTS_SUBSCRIPTION,
+      meteor: {
+        subscribe: () => Meteor.subscribe('home.posts'),
+        get: () => Posts.find().fetch(),
+      },
     };
   }
 ```
@@ -182,18 +178,16 @@ If you need to pass some extra data to the reducer with the `subscriptions` midd
   export const HOME_POSTS_SUBSCRIPTION_CHANGED = 'HOME_POSTS_SUBSCRIPTION_CHANGED';
 
   export function loadHomePosts() {
-    return dispatch => {
-      dispatch({
-        type: HOME_POSTS_SUBSCRIPTION,
-        meteor: {
-          subscribe: () => Meteor.subscribe('home.posts'),
-          get: () => Posts.find().fetch(),
-          onReadyData: () => ({
-            extraKey1: 'extraValue1',
-            extraKey2: 'extraValue2',
-          }),
-        },
-      });
+    return {
+      type: HOME_POSTS_SUBSCRIPTION,
+      meteor: {
+        subscribe: () => Meteor.subscribe('home.posts'),
+        get: () => Posts.find().fetch(),
+        onReadyData: () => ({
+          extraKey1: 'extraValue1',
+          extraKey2: 'extraValue2',
+        }),
+      },
     };
   }
 ```

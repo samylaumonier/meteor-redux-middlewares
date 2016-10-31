@@ -1,4 +1,3 @@
-/* eslint-disable arrow-parens */
 /* eslint-disable consistent-return */
 const computations = {};
 

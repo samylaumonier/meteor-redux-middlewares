@@ -1,4 +1,3 @@
-/* eslint-disable arrow-parens */
 /* eslint-disable consistent-return */
 const subscriptions = {};
 const computations = {};
@@ -35,8 +34,8 @@ export default Tracker => store => next => action => {
         ready,
         type: `${action.type}_READY`,
         data: action.meteor.onReadyData
-          ? action.meteor.onReadyData()
-          : null,
+            ? action.meteor.onReadyData()
+            : null,
       });
     });
   }, 0);
