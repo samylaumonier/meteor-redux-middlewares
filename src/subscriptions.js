@@ -1,4 +1,3 @@
-/* eslint-disable arrow-parens */
 /* eslint-disable consistent-return */
 const subscriptions = {};
 const computations = {};
@@ -15,10 +14,6 @@ export default Tracker => store => next => action => {
 
       computations[subscriptionId].stop();
       subscriptions[action.type].stop();
-      store.dispatch({
-        type: `${action.type}_STOPPED`,
-        data: null,
-      });
     }
 
     const subscription = action.meteor.subscribe();
