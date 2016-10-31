@@ -1,4 +1,4 @@
-import subscriptionsMiddleware from './subscriptions';
+import subscriptionsMiddleware, { stopSubscription } from './subscriptions';
 import sourcesMiddleware from './sources';
 
 const middlewares = [
@@ -16,3 +16,5 @@ export default (tracker) => {
     sources,
   };
 };
+
+export { stopSubscription };
