@@ -1,17 +1,24 @@
-Redux middlewares that allow you to sync the store with Mongo and any reactive sources.
+Middlewares to sync meteor reactive sources with redux store.
 
 - [Live demo](https://meteor-redux-middlewares-demo.herokuapp.com)
 - [Demo sources on GitHub](https://github.com/samybob1/meteor-redux-middlewares-demo)
+- [Package on npm](https://www.npmjs.com/package/meteor-redux-middlewares)
 - [Package on Atmosphere](https://atmospherejs.com/samy/redux-middlewares)
 
 
 # Installation
 
-`npm i meteor-redux-middlewares`
+##### Using npm
 
-or even better 😉
+`npm i meteor-redux-middlewares --save`
+
+##### Using yarn
 
 `yarn add meteor-redux-middlewares`
+
+##### Using meteor
+
+`meteor add samy:redux-middlewares`
 
 
 # Example of use
@@ -24,7 +31,8 @@ All the following code is available on the [demo repository](https://github.com/
 ```js
   // File '/imports/store/index.js'
   import { Tracker } from 'meteor/tracker';
-  import createReactiveMiddleware from 'meteor-redux-middlewares';
+  import createReactiveMiddlewares from 'meteor-redux-middlewares';
+  // or: import createReactiveMiddlewares from 'meteor/samy:redux-middlewares';
   import { applyMiddleware, createStore, compose } from 'redux';
 
   // Of course, you can use other middlewares as well
@@ -41,7 +49,7 @@ All the following code is available on the [demo repository](https://github.com/
   const {
     sources,
     subscriptions,
-  } = createReactiveMiddleware(Tracker);
+  } = createReactiveMiddlewares(Tracker);
 
   const store = createStore(rootReducer, compose(
     applyMiddleware(sources, subscriptions, thunk, logger)
@@ -221,4 +229,5 @@ Then in your reducer, you can access to the extra data by using the `data` attri
 
 # Credits
 
-Based on the work of [Gildas Garcia (djhi)](https://github.com/djhi) on his [My-Nutrition project](https://github.com/djhi/my-nutrition/tree/master/app/client/middlewares).
+Based on the work of [Gildas Garcia (@djhi)](https://github.com/djhi) on his [My-Nutrition project](https://github.com/djhi/my-nutrition/tree/master/app/client/middlewares).
+Thanks to [Kyle Chamberlain (@Koleok)](https://github.com/Koleok) for his [contribution](https://github.com/samybob1/meteor-redux-middlewares/commits/master?author=Koleok).
