@@ -3,3 +3,6 @@ lib/
 
 # Dependency directories
 node_modules/
+
+# Mac OS
+.DS_Store
