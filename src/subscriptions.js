@@ -2,6 +2,18 @@
 const subscriptions = {};
 const computations = {};
 
+export const stopSubscription = (actionType, data = null) => {
+  const subscriptionId = subscriptions[actionType].subscriptionId;
+
+  computations[subscriptionId].stop();
+  subscriptions[actionType].stop();
+
+  return {
+    type: `${actionType}_STOPPED`,
+    data,
+  };
+};
+
 export default Tracker => store => next => action => {
   if (!action.meteor || !action.meteor.subscribe) {
     return next(action);
@@ -10,10 +22,7 @@ export default Tracker => store => next => action => {
   // setTimeout is fixing this bug: https://github.com/meteor/react-packages/issues/99
   setTimeout(() => {
     if (subscriptions[action.type]) {
-      const subscriptionId = subscriptions[action.type].subscriptionId;
-
-      computations[subscriptionId].stop();
-      subscriptions[action.type].stop();
+      store.dispatch(stopSubscription(action.type));
     }
 
     const subscription = action.meteor.subscribe();
