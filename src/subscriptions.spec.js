@@ -36,7 +36,7 @@ store.dispatch(start);
 store.dispatch(start);
 store.dispatch(stop);
 
-it('should first stop the subscription and tracker before re-subscribing', () => {
+it('should handle a startSubscription action', () => {
   expect(store.getActions()).toMatchSnapshot();
 });
 
