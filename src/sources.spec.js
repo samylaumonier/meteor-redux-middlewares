@@ -1,5 +1,7 @@
 import configureMockStore from 'redux-mock-store';
 import sources from './sources';
+import { registerReactiveSource } from './actions';
+
 
 /**
  * See src/__mocks__/mocks.js
@@ -13,27 +15,32 @@ import sources from './sources';
  * and later check against
  */
 const {
+  get,
   results,
   tracker,
-  registerReactiveAction: register,
-  reactiveChangedAction: change,
+  treasure,
 } = require('mocks')();
 
 const store = configureMockStore([sources(tracker)])({});
+const register = registerReactiveSource({ key: 'mates', get });
+const changed = {
+  type: 'MATES_REACTIVE_SOURCE_CHANGED',
+  payload: treasure,
+};
 
 const actions = [register, register];
 actions.forEach(store.dispatch);
 
-it('should handle a subscribe action', () => {
+it('should handle a registerReactiveSource action', () => {
   expect(store.getActions()).toEqual([
-    change,
+    changed,
     register,
-    change,
+    changed,
     register,
   ]);
 });
 
-it('should fire functions in payload in the correct sequence', () => {
+it('should fire in the correct sequence', () => {
   expect(results).toEqual([
     'i got me data!',
     'my computation be stopped now!',

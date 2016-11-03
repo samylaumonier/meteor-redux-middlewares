@@ -1,45 +1,41 @@
-import {
-  REGISTER_REACTIVE_SOURCE,
-  reactiveDataChanged,
-} from './actions';
-
-import { hasGet, hasSubscribe, isBrowser } from './utils';
+import { REGISTER_REACTIVE_SOURCE } from './actions';
+import { hasGet, hasSubscribe, hasKey, errorWith } from './utils';
+import runContextual from './runContextual';
 
 const computations = {};
 
 export default tracker => ({ dispatch }) => next => action => {
+  const throwIfNot = errorWith(action);
+
   if (action.type === REGISTER_REACTIVE_SOURCE) {
-    if (!hasGet(action)) {
-      throw new Error(
+    const run = () => {
+      throwIfNot(hasKey,
+        'A registerReactiveSource action needs a `key` string to identify tracked source'
+      );
+
+      throwIfNot(hasGet,
         'A registerReactiveSource action needs a `get` function to load data'
       );
-    }
 
-    if (hasSubscribe(action)) {
-      throw new Error(
+      throwIfNot(x => !hasSubscribe(x),
         'Use a startSubscription action to start a subscription'
       );
-    }
 
-    const run = () => {
-      if (computations[action.type]) {
-        computations[action.type].stop();
+      const { key } = action.payload;
+
+      if (computations[key]) {
+        computations[key].stop();
       }
 
-      computations[action.type] = tracker.autorun(() => {
-        dispatch(
-          reactiveDataChanged(action.payload.get())
-        );
+      computations[key] = tracker.autorun(() => {
+        dispatch({
+          type: `${key.toUpperCase()}_REACTIVE_SOURCE_CHANGED`,
+          payload: action.payload.get(),
+        });
       });
     };
 
-    if (isBrowser) {
-      // setTimeout is fixing this bug:
-      // https://github.com/meteor/react-packages/issues/99
-      setImmediate(run);
-    } else {
-      run();
-    }
+    runContextual(run);
   }
 
   return next(action);

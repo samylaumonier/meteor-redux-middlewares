@@ -1,17 +1,20 @@
-import {
-  subscriptionReady,
-  startSubscription,
-  subscriptionDataChanged,
-  registerReactiveSource,
-  reactiveDataChanged,
-} from '../actions';
-
 const treasure = [
   { id: 'treasure' },
 ];
 
 module.exports = () => {
   const results = [];
+
+  const tracker = {
+    autorun: f => ({
+      value: f(),
+      stop: () => {
+        const txt = 'my computation be stopped now!';
+        results.push(txt);
+        return txt;
+      },
+    }),
+  };
 
   function get() {
     results.push('i got me data!');
@@ -32,19 +35,6 @@ module.exports = () => {
     results,
     treasure,
     subscribe,
-
-    tracker: {
-      autorun: f => ({
-        value: f(),
-        stop: () => results.push('my computation be stopped now!'),
-      }),
-    },
-
-    registerReactiveAction: registerReactiveSource({ get }),
-    reactiveChangedAction: reactiveDataChanged(treasure),
-
-    subscriptionReadyAction: subscriptionReady(true),
-    startSubscriptionAction: startSubscription('mates'),
-    subscriptionDataChangedAction: subscriptionDataChanged(treasure),
+    tracker,
   };
 };
