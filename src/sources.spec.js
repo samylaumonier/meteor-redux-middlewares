@@ -10,9 +10,6 @@ import { registerReactiveSource } from './actions';
  * functions to ensure the sequence is as expected
  * (the tags are in pirate speak)
  *
- * The two actions are simply calls to the corresponding action creator
- * functions, and are used as plain objects to dispatch
- * and later check against
  */
 const {
   get,
