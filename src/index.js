@@ -1,12 +1,11 @@
 import subscriptionsMiddleware, { stopSubscription } from './subscriptions';
 import sourcesMiddleware from './sources';
+import { injectTracker } from './utils';
 
 const middlewares = [
   subscriptionsMiddleware,
   sourcesMiddleware,
 ];
-
-const injectTracker = (tracker, middlewares) => middlewares.map(m => m(tracker));
 
 export default (tracker) => {
   const [subscriptions, sources] = injectTracker(tracker, middlewares);

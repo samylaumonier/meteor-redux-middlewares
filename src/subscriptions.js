@@ -1,51 +1,52 @@
-/* eslint-disable consistent-return */
+import {
+  START_SUBSCRIPTION,
+  stopSubscription,
+  subscriptionReady,
+  subscriptionDataChanged,
+} from './actions';
+
+import { hasSubscribe, isBrowser } from './utils';
+
 const subscriptions = {};
 const computations = {};
 
-export const stopSubscription = (actionType, data = null) => {
-  const subscriptionId = subscriptions[actionType].subscriptionId;
-
-  computations[subscriptionId].stop();
-  subscriptions[actionType].stop();
-
-  return {
-    type: `${actionType}_STOPPED`,
-    data,
-  };
-};
-
-export default Tracker => store => next => action => {
-  if (!action.meteor || !action.meteor.subscribe) {
-    return next(action);
-  }
-
-  // setTimeout is fixing this bug: https://github.com/meteor/react-packages/issues/99
-  setTimeout(() => {
-    if (subscriptions[action.type]) {
-      store.dispatch(stopSubscription(action.type));
-    }
-
-    const subscription = action.meteor.subscribe();
-    const subscriptionId = subscription.subscriptionId;
-
-    subscriptions[action.type] = subscription;
-    computations[subscriptionId] = Tracker.autorun(() => {
-      const ready = subscription.ready();
-
-      if (ready) {
-        store.dispatch({
-          type: `${action.type}_CHANGED`,
-          data: action.meteor.get(),
-        });
+export default Tracker => ({ dispatch }) => next => action => {
+  if (action.type === START_SUBSCRIPTION && hasSubscribe(action)) {
+    const run = () => {
+      if (subscriptions[action.type]) {
+        dispatch(stopSubscription(action.type));
       }
 
-      store.dispatch({
-        ready,
-        type: `${action.type}_READY`,
-        data: action.meteor.onReadyData
+      const subscription = action.meteor.subscribe();
+      const subscriptionId = subscription.subscriptionId;
+
+      subscriptions[action.type] = subscription;
+      computations[subscriptionId] = Tracker.autorun(() => {
+        const ready = subscription.ready();
+
+        if (ready) {
+          dispatch(
+            subscriptionDataChanged({ data: action.meteor.get() })
+          );
+        }
+
+        dispatch(subscriptionReady({
+          ready,
+          data: action.meteor.onReadyData
             ? action.meteor.onReadyData()
             : null,
+        }));
       });
-    });
-  }, 0);
+    };
+
+    if (isBrowser) {
+      // setTimeout is fixing this bug:
+      // https://github.com/meteor/react-packages/issues/99
+      setImmediate(run);
+    } else {
+      run();
+    }
+  }
+
+  return next(action);
 };

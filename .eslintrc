@@ -22,7 +22,7 @@
   },
   "env": {
     "node": true,
-    "meteor": true
+    "jest": true
   },
   "parserOptions": {
     "ecmaFeatures": {
