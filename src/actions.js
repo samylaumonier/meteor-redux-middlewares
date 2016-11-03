@@ -8,15 +8,3 @@ export const stopSubscription = createAction(STOP_SUBSCRIPTION);
 
 export const START_SUBSCRIPTION = 'START_SUBSCRIPTION';
 export const startSubscription = createAction(START_SUBSCRIPTION);
-
-export const types = [
-  REGISTER_REACTIVE_SOURCE,
-  STOP_SUBSCRIPTION,
-  START_SUBSCRIPTION,
-];
-
-export const actions = {
-  registerReactiveSource,
-  stopSubscription,
-  startSubscription,
-};

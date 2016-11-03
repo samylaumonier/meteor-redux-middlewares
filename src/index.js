@@ -7,7 +7,7 @@ const middlewares = [
   sourcesMiddleware,
 ];
 
-export { actions, types } from './actions';
+export * from './actions';
 
 export default (tracker) => {
   const [subscriptions, sources] = injectTracker(tracker, middlewares);
