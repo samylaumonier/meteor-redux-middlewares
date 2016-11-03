@@ -1,10 +1,23 @@
 import { isFSA } from 'flux-standard-action';
 import {
+  actionCase,
   createAction,
   has,
   injectTracker,
   isBrowser,
 } from './utils';
+
+describe('#actionCase', () => {
+  const result = actionCase('one.man');
+
+  it('replaces dots with underscores', () => {
+    expect(result.includes('.')).toBe(false);
+  });
+
+  it('capitalizes', () => {
+    expect(result.toUpperCase()).toBe(result);
+  });
+});
 
 describe('#has', () => {
   const hasNumber = has(Number);

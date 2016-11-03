@@ -14,6 +14,9 @@ export const hasSubscribe = hasFunc(path('subscribe'));
 export const hasKey = hasString(path('key'));
 export const hasGet = hasFunc(path('get'));
 
+export const actionCase =
+  S.B(S.toUpper, x => x.replace('.', '_'));
+
 export const createAction =
   type => (payload = {}, meta = {}) => ({ type, payload, meta });
 

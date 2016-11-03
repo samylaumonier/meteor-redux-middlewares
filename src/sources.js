@@ -1,5 +1,5 @@
 import { REGISTER_REACTIVE_SOURCE } from './actions';
-import { hasGet, hasSubscribe, hasKey, errorWith } from './utils';
+import { actionCase, hasGet, hasSubscribe, hasKey, errorWith } from './utils';
 import runContextual from './runContextual';
 
 const computations = {};
@@ -29,7 +29,7 @@ export default tracker => ({ dispatch }) => next => action => {
 
       computations[key] = tracker.autorun(() => {
         dispatch({
-          type: `${key.toUpperCase()}_REACTIVE_SOURCE_CHANGED`,
+          type: `${actionCase(key)}_REACTIVE_SOURCE_CHANGED`,
           payload: action.payload.get(),
         });
       });

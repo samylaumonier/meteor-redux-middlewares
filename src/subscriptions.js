@@ -7,9 +7,10 @@ import {
 } from './actions';
 
 import {
+  actionCase,
+  errorWith,
   hasGet,
   hasKey,
-  errorWith,
   hasSubscribe,
   stringPayload,
 } from './utils';
@@ -66,13 +67,13 @@ export default tracker => ({ dispatch }) => next => action => {
 
         if (ready) {
           dispatch({
-            type: `${key.toUpperCase()}_SUBSCRIPTION_CHANGED`,
+            type: `${actionCase(key)}_SUBSCRIPTION_CHANGED`,
             payload: action.payload.get(),
           });
         }
 
         dispatch({
-          type: `${key.toUpperCase()}_SUBSCRIPTION_READY`,
+          type: `${actionCase(key)}_SUBSCRIPTION_READY`,
           payload: {
             ready,
             data: action.payload.onReadyData
