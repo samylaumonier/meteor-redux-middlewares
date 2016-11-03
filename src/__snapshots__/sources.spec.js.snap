@@ -1,0 +1,44 @@
+exports[`test should fire in the correct sequence 1`] = `
+Array [
+  "i got me data!",
+  "my computation be stopped now!",
+  "i got me data!",
+]
+`;
+
+exports[`test should handle a registerReactiveSource action 1`] = `
+Array [
+  Object {
+    "payload": Array [
+      Object {
+        "id": "treasure",
+      },
+    ],
+    "type": "MATES_REACTIVE_SOURCE_CHANGED",
+  },
+  Object {
+    "meta": Object {},
+    "payload": Object {
+      "get": [Function],
+      "key": "mates",
+    },
+    "type": "REGISTER_REACTIVE_SOURCE",
+  },
+  Object {
+    "payload": Array [
+      Object {
+        "id": "treasure",
+      },
+    ],
+    "type": "MATES_REACTIVE_SOURCE_CHANGED",
+  },
+  Object {
+    "meta": Object {},
+    "payload": Object {
+      "get": [Function],
+      "key": "mates",
+    },
+    "type": "REGISTER_REACTIVE_SOURCE",
+  },
+]
+`;

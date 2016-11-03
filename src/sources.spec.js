@@ -15,32 +15,18 @@ const {
   get,
   results,
   tracker,
-  treasure,
 } = require('mocks')();
 
-const store = configureMockStore([sources(tracker)])({});
 const register = registerReactiveSource({ key: 'mates', get });
-const changed = {
-  type: 'MATES_REACTIVE_SOURCE_CHANGED',
-  payload: treasure,
-};
 
-const actions = [register, register];
-actions.forEach(store.dispatch);
+const store = configureMockStore([sources(tracker)])({});
+store.dispatch(register);
+store.dispatch(register);
 
 it('should handle a registerReactiveSource action', () => {
-  expect(store.getActions()).toEqual([
-    changed,
-    register,
-    changed,
-    register,
-  ]);
+  expect(store.getActions()).toMatchSnapshot();
 });
 
 it('should fire in the correct sequence', () => {
-  expect(results).toEqual([
-    'i got me data!',
-    'my computation be stopped now!',
-    'i got me data!',
-  ]);
+  expect(results).toMatchSnapshot();
 });
