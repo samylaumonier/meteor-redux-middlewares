@@ -21,7 +21,7 @@ export const injectTracker =
   (tracker, middlewares) => middlewares.map(m => m(tracker));
 
 export const isBrowser =
-  typeof process === 'undefined';
+  () => typeof process === 'undefined';
 
 export const errorWith = x => (f, msg) => {
   if (!f(x)) {

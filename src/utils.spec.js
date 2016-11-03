@@ -57,6 +57,6 @@ describe('#injectTracker', () => {
 describe('#isBrowser', () => {
   // This should always be false in jest env (node)
   it('should be true', () => {
-    expect(isBrowser).toBe(false);
+    expect(isBrowser()).toBe(false);
   });
 });

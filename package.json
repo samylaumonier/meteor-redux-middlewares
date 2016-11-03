@@ -23,7 +23,7 @@
     "test": "./node_modules/.bin/jest",
     "lint": "./node_modules/.bin/eslint .",
     "clean": "./node_modules/.bin/rimraf lib",
-    "build": "npm run clean && ./node_modules/.bin/babel src --out-dir lib --ignore \"**/*.spec.js\"",
+    "build": "npm run clean && ./node_modules/.bin/babel src --out-dir lib --ignore '**/*.spec.js'",
     "watch": "watch 'npm run build' src/ -d"
   },
   "devDependencies": {
