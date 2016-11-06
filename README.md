@@ -72,7 +72,7 @@ All the following code is available on the [demo repository](https://github.com/
     registerReactiveSource({
       key: 'user',
       get: () => Meteor.user() || {},
-    })
+    });
 ```
 
 This action will automatically be intercepted by the `sources` middleware. Your `get` function is running inside a `Tracker.autorun`, that means each time the data will change, the middleware will dispatch an action with the `_REACTIVE_SOURCE_CHANGED` suffix. In this example, we are dispatching an action with a key of `user`, so we have to handle the `USER_REACTIVE_SOURCE_CHANGED` action in our reducer.
