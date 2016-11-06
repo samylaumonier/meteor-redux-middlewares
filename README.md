@@ -21,6 +21,16 @@ Middlewares to sync meteor reactive sources with redux store.
 `meteor add samy:redux-middlewares`
 
 
+# Table of Contents
+
+- [Example of use](#example-of-use)
+    - [Step 1: apply middlewares](#step-1-apply-middlewares)
+    - [Step 2: create actions](#step-2-create-actions)
+    - [Step 3: create reducers](#step-3-create-reducers)
+- [Stop a subscription](#stop-a-subscription)
+- [Pass extra data to the reducer](#pass-extra-data-to-the-reducer)
+
+
 # Example of use
 
 All the following code is available on the [demo repository](https://github.com/samybob1/meteor-redux-middlewares-demo).
@@ -98,7 +108,7 @@ This action will automatically be intercepted by the `sources` middleware. Your 
 This action will automatically be intercepted by the `subscriptions` middleware. Your `get` function is running inside a `Tracker.autorun`, that means each time the data will change, the middleware will dispatch an action with the `_SUBSCRIPTION_CHANGED` suffix. In the same way, each time the subscription will be ready (or not), the middleware will dispatch an action with the `_SUBSCRIPTION_READY` suffix. In this example, we are dispatching an action with a key of `home.posts`, so we have to handle the `HOME_POSTS_SUBSCRIPTION_READY` and `HOME_POSTS_SUBSCRIPTION_CHANGED` actions in our reducer.
 
 
-##### Step 2: create reducers
+##### Step 3: create reducers
 
 ```js
   // File '/imports/reducers/user.js'
@@ -164,6 +174,38 @@ With the **reactive sources**, we can access to the data returned by our `get` f
 With the **subscriptions**, we can access to:
 - the data returned by our `get` function inside the `action.payload` attribute.
 - the readiness state of the subscription inside the `action.payload.ready` attribute.
+
+
+# Stop a subscription
+
+You can stop a subscription by dispatching the `stopSubscription` action, for example inside a container component:
+
+```js
+  import { connect } from 'react-redux';
+  import { stopSubscription } from 'meteor-redux-middlewares';
+  import { loadHomePosts, HOME_POSTS_SUB } from '/imports/actions/home/posts/load';
+  import { HomePageComponent } from '/imports/ui/components/pages/HomePageComponent';
+  
+  const mapStateToProps = state => ({
+    postsReady: state.home.ready,
+    posts: state.home.posts,
+    postsSubscriptionStopped: state.home.postsSubscriptionStopped,
+  });
+  
+  const mapDispatchToProps = dispatch => ({
+    loadPosts: () => {
+      dispatch(loadHomePosts());
+    },
+    stopPostsSubscription: () => {
+      dispatch(stopSubscription(HOME_POSTS_SUB));
+    },
+  });
+  
+  export const HomePageContainer = connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )(HomePageComponent);  
+```
 
 
 # Pass extra data to the reducer
