@@ -3,6 +3,8 @@ src/
 .eslintrc
 .eslintignore
 
+.babelrc
+
 # Meteor
 package.js
 .versions

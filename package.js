@@ -1,3 +1,5 @@
+/* eslint-disable no-undef */
+
 Package.describe({
   name: 'samy:redux-middlewares',
   version: '3.0.0',
