@@ -1,0 +1,79 @@
+exports[`test should fire in the correct sequence 1`] = `
+Array [
+  "yarg, i subscribed!",
+  "i got me data!",
+  "im ready, but me eyepatch is lost",
+  "my computation be stopped now!",
+  "my subscription be stopped now!",
+  "yarg, i subscribed!",
+  "i got me data!",
+  "im ready, but me eyepatch is lost",
+  "my computation be stopped now!",
+  "my subscription be stopped now!",
+]
+`;
+
+exports[`test should handle a startSubscription action 1`] = `
+Array [
+  Object {
+    "payload": Array [
+      Object {
+        "id": "treasure",
+      },
+    ],
+    "type": "MATES_SUBSCRIPTION_CHANGED",
+  },
+  Object {
+    "payload": Object {
+      "data": "im ready, but me eyepatch is lost",
+      "ready": true,
+    },
+    "type": "MATES_SUBSCRIPTION_READY",
+  },
+  Object {
+    "meta": Object {},
+    "payload": Object {
+      "get": [Function],
+      "key": "mates",
+      "onReadyData": [Function],
+      "subscribe": [Function],
+    },
+    "type": "START_SUBSCRIPTION",
+  },
+  Object {
+    "meta": Object {},
+    "payload": "mates",
+    "type": "STOP_SUBSCRIPTION",
+  },
+  Object {
+    "payload": Array [
+      Object {
+        "id": "treasure",
+      },
+    ],
+    "type": "MATES_SUBSCRIPTION_CHANGED",
+  },
+  Object {
+    "payload": Object {
+      "data": "im ready, but me eyepatch is lost",
+      "ready": true,
+    },
+    "type": "MATES_SUBSCRIPTION_READY",
+  },
+  Object {
+    "meta": Object {},
+    "payload": Object {
+      "get": [Function],
+      "key": "mates",
+      "onReadyData": [Function],
+      "subscribe": [Function],
+    },
+    "type": "START_SUBSCRIPTION",
+  },
+  Object {
+    "meta": Object {},
+    "payload": "mates",
+    "type": "STOP_SUBSCRIPTION",
+  },
+]
+`;

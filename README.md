@@ -64,51 +64,45 @@ All the following code is available on the [demo repository](https://github.com/
 ```js
   // File '/imports/actions/user/load.js'
   import { Meteor } from 'meteor/meteor';
+  import { registerReactiveSource } from 'meteor-redux-middlewares';
 
-  export const USER = 'USER';
-  export const USER_CHANGED = 'USER_CHANGED';
+  export const USER_REACTIVE_SOURCE_CHANGED = 'USER_REACTIVE_SOURCE_CHANGED';
 
-  export function loadUser() {
-    return {
-      type: USER,
-      meteor: {
-        get: () => Meteor.user() || {},
-      },
-    };
-  }
+  export const loadUser = () =>
+    registerReactiveSource({
+      key: 'user',
+      get: () => Meteor.user() || {},
+    });
 ```
 
-This action will automatically be intercepted by the `sources` middleware. Your `get` function is running inside a `Tracker.autorun`, that means each time the data will change, the middleware will dispatch an action with the `_CHANGED` suffix. In this example, we are dispatching an action of type `USER`, so we have to handle the `USER_CHANGED` action in our reducer.
+This action will automatically be intercepted by the `sources` middleware. Your `get` function is running inside a `Tracker.autorun`, that means each time the data will change, the middleware will dispatch an action with the `_REACTIVE_SOURCE_CHANGED` suffix. In this example, we are dispatching an action with a key of `user`, so we have to handle the `USER_REACTIVE_SOURCE_CHANGED` action in our reducer.
 
 ```js
   // File '/imports/actions/home/posts/load.js'
   import { Meteor } from 'meteor/meteor';
-
+  import { startSubscription } from 'meteor-redux-middlewares';
   import { Posts } from '/imports/api/collections/posts';
 
-  export const HOME_POSTS_SUBSCRIPTION = 'HOME_POSTS_SUBSCRIPTION';
   export const HOME_POSTS_SUBSCRIPTION_READY = 'HOME_POSTS_SUBSCRIPTION_READY';
   export const HOME_POSTS_SUBSCRIPTION_CHANGED = 'HOME_POSTS_SUBSCRIPTION_CHANGED';
+  export const HOME_POSTS_SUB = 'home.posts';
 
-  export function loadHomePosts() {
-    return {
-      type: HOME_POSTS_SUBSCRIPTION,
-      meteor: {
-        subscribe: () => Meteor.subscribe('home.posts'),
-        get: () => Posts.find().fetch(),
-      },
-    };
-  }
+  export const loadHomePosts = () =>
+    startSubscription({
+      key: HOME_POSTS_SUB,
+      get: () => Posts.find().fetch(),
+      subscribe: () => Meteor.subscribe(HOME_POSTS_SUB),
+    });
 ```
 
-This action will automatically be intercepted by the `subscriptions` middleware. Your `get` function is running inside a `Tracker.autorun`, that means each time the data will change, the middleware will dispatch an action with the `_CHANGED` suffix. In the same way, each time the subscription will be ready (or not), the middleware will dispatch an action with the `_READY` suffix. In this example, we are dispatching an action of type `HOME_POSTS_SUBSCRIPTION`, so we have to handle the `HOME_POSTS_SUBSCRIPTION_READY` and `HOME_POSTS_SUBSCRIPTION_CHANGED` actions in our reducer.
+This action will automatically be intercepted by the `subscriptions` middleware. Your `get` function is running inside a `Tracker.autorun`, that means each time the data will change, the middleware will dispatch an action with the `_SUBSCRIPTION_CHANGED` suffix. In the same way, each time the subscription will be ready (or not), the middleware will dispatch an action with the `_SUBSCRIPTION_READY` suffix. In this example, we are dispatching an action with a key of `home.posts`, so we have to handle the `HOME_POSTS_SUBSCRIPTION_READY` and `HOME_POSTS_SUBSCRIPTION_CHANGED` actions in our reducer.
 
 
 ##### Step 2: create reducers
 
 ```js
   // File '/imports/reducers/user.js'
-  import { USER_CHANGED } from '/imports/actions/user/load';
+  import { USER_REACTIVE_SOURCE_CHANGED } from '/imports/actions/user/load';
 
   const initialState = {
     ready: false,
@@ -116,9 +110,9 @@ This action will automatically be intercepted by the `subscriptions` middleware.
 
   export function user(state = initialState, action) {
     switch (action.type) {
-      case USER_CHANGED:
+      case USER_REACTIVE_SOURCE_CHANGED:
         return {
-          ...action.data,
+          ...action.payload,
           ready: true,
         };
       default:
@@ -127,18 +121,22 @@ This action will automatically be intercepted by the `subscriptions` middleware.
   }
 ```
 
-With the **reactive sources**, we can access to the data returned by our `get` function inside the `action.data` attribute.
+With the **reactive sources**, we can access to the data returned by our `get` function inside the `action.payload` attribute.
 
 ```js
   // File '/imports/reducers/home.js'
+  import { STOP_SUBSCRIPTION } from 'meteor-redux-middlewares';
+
   import {
     HOME_POSTS_SUBSCRIPTION_READY,
-    HOME_POSTS_SUBSCRIPTION_CHANGED
+    HOME_POSTS_SUBSCRIPTION_CHANGED,
+    HOME_POSTS_SUB,
   } from '/imports/actions/home/posts/load';
 
   const initialState = {
     ready: false,
     posts: [],
+    postsSubscriptionStopped: false,
   };
 
   export function home(state = initialState, action) {
@@ -146,13 +144,17 @@ With the **reactive sources**, we can access to the data returned by our `get` f
       case HOME_POSTS_SUBSCRIPTION_READY:
         return {
           ...state,
-          ready: action.ready,
+          ready: action.payload.ready,
         };
       case HOME_POSTS_SUBSCRIPTION_CHANGED:
         return {
           ...state,
-          posts: action.data
+          posts: action.payload,
         };
+      case STOP_SUBSCRIPTION:
+        return action.payload === HOME_POSTS_SUB
+          ? { ...state, postsSubscriptionStopped: true }
+          : state;
       default:
         return state;
     }
@@ -160,8 +162,8 @@ With the **reactive sources**, we can access to the data returned by our `get` f
 ```
 
 With the **subscriptions**, we can access to:
-- the data returned by our `get` function inside the `action.data` attribute.
-- the readiness state of the subscription inside the `action.ready` attribute.
+- the data returned by our `get` function inside the `action.payload` attribute.
+- the readiness state of the subscription inside the `action.payload.ready` attribute.
 
 
 # Pass extra data to the reducer
@@ -170,29 +172,26 @@ If you need to pass some extra data to the reducer with the `subscriptions` midd
 
 ```js
   import { Meteor } from 'meteor/meteor';
-
+  import { startSubscription } from 'meteor-redux-middlewares';
   import { Posts } from '/imports/api/collections/posts';
 
-  export const HOME_POSTS_SUBSCRIPTION = 'HOME_POSTS_SUBSCRIPTION';
   export const HOME_POSTS_SUBSCRIPTION_READY = 'HOME_POSTS_SUBSCRIPTION_READY';
   export const HOME_POSTS_SUBSCRIPTION_CHANGED = 'HOME_POSTS_SUBSCRIPTION_CHANGED';
+  export const HOME_POSTS_SUB = 'home.posts';
 
-  export function loadHomePosts() {
-    return {
-      type: HOME_POSTS_SUBSCRIPTION,
-      meteor: {
-        subscribe: () => Meteor.subscribe('home.posts'),
-        get: () => Posts.find().fetch(),
-        onReadyData: () => ({
-          extraKey1: 'extraValue1',
-          extraKey2: 'extraValue2',
-        }),
-      },
-    };
-  }
+  export const loadHomePosts = () =>
+    startSubscription({
+      key: HOME_POSTS_SUB,
+      get: () => Posts.find().fetch(),
+      subscribe: () => Meteor.subscribe(HOME_POSTS_SUB),
+      onReadyData: () => ({
+        extraKey1: 'extraValue1',
+        extraKey2: 'extraValue2',
+      }),
+    });
 ```
 
-Then in your reducer, you can access to the extra data by using the `data` attribute;
+Then in your reducer, you can access to the extra data by using the `payload.data` attribute;
 
 ```js
   import {
@@ -209,16 +208,16 @@ Then in your reducer, you can access to the extra data by using the `data` attri
     switch (action.type) {
       case HOME_POSTS_SUBSCRIPTION_READY:
         // This will log: Object { extraKey1="extraValue1", extraKey2="extraValue2" }
-        console.log(action.data);
+        console.log(action.payload.data);
 
         return {
           ...state,
-          ready: action.ready,
+          ready: action.payload.ready,
         };
       case HOME_POSTS_SUBSCRIPTION_CHANGED:
         return {
           ...state,
-          posts: action.data
+          posts: action.payload
         };
       default:
         return state;

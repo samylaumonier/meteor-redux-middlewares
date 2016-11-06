@@ -1,42 +1,91 @@
-/* eslint-disable consistent-return */
+import runContextual from './runContextual';
+
+import {
+  STOP_SUBSCRIPTION,
+  START_SUBSCRIPTION,
+  stopSubscription,
+} from './actions';
+
+import {
+  actionCase,
+  errorWith,
+  hasGet,
+  hasKey,
+  hasSubscribe,
+  stringPayload,
+} from './utils';
+
 const subscriptions = {};
 const computations = {};
 
-export default Tracker => store => next => action => {
-  if (!action.meteor || !action.meteor.subscribe) {
-    return next(action);
+export default tracker => ({ dispatch }) => next => action => {
+  const throwIfNot = errorWith(action);
+
+  if (action.type === STOP_SUBSCRIPTION) {
+    const stop = () => {
+      throwIfNot(stringPayload,
+        'A stopSubscription action needs a string payload to identify a subscription'
+      );
+
+      if (subscriptions[action.payload]) {
+        const subscriptionId = subscriptions[action.payload].subscriptionId;
+
+        computations[subscriptionId].stop();
+        subscriptions[action.payload].stop();
+      }
+    };
+
+    runContextual(stop);
   }
 
-  // setTimeout is fixing this bug: https://github.com/meteor/react-packages/issues/99
-  setTimeout(() => {
-    if (subscriptions[action.type]) {
-      const subscriptionId = subscriptions[action.type].subscriptionId;
+  if (action.type === START_SUBSCRIPTION) {
+    const start = () => {
+      throwIfNot(hasSubscribe,
+        'A startSubscription action needs a `subscribe` function to start a subscription'
+      );
 
-      computations[subscriptionId].stop();
-      subscriptions[action.type].stop();
-    }
+      throwIfNot(hasKey,
+        'A startSubscription action needs a `key` string to identify a subscription'
+      );
 
-    const subscription = action.meteor.subscribe();
-    const subscriptionId = subscription.subscriptionId;
+      throwIfNot(hasGet,
+        'A startSubscription action needs a `get` function to load data'
+      );
 
-    subscriptions[action.type] = subscription;
-    computations[subscriptionId] = Tracker.autorun(() => {
-      const ready = subscription.ready();
+      const { key, subscribe } = action.payload;
 
-      if (ready) {
-        store.dispatch({
-          type: `${action.type}_CHANGED`,
-          data: action.meteor.get(),
-        });
+      if (subscriptions[key]) {
+        dispatch(stopSubscription(key));
       }
 
-      store.dispatch({
-        ready,
-        type: `${action.type}_READY`,
-        data: action.meteor.onReadyData
-            ? action.meteor.onReadyData()
-            : null,
+      const subscription = subscribe();
+      const { subscriptionId } = subscription;
+
+      subscriptions[key] = subscription;
+      computations[subscriptionId] = tracker.autorun(() => {
+        const ready = subscription.ready();
+
+        if (ready) {
+          dispatch({
+            type: `${actionCase(key)}_SUBSCRIPTION_CHANGED`,
+            payload: action.payload.get(),
+          });
+        }
+
+        dispatch({
+          type: `${actionCase(key)}_SUBSCRIPTION_READY`,
+          payload: {
+            ready,
+            data: action.payload.onReadyData
+              ? action.payload.onReadyData()
+              : {},
+          },
+        });
       });
-    });
-  }, 0);
+    };
+
+    runContextual(start);
+  }
+
+  return next(action);
 };

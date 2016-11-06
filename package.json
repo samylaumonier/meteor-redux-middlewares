@@ -1,13 +1,16 @@
 {
   "name": "meteor-redux-middlewares",
-  "version": "2.0.3",
+  "version": "3.0.0",
   "description": "Middlewares to sync meteor reactive sources with redux store",
   "main": "lib/index.js",
   "repository": {
     "url": "git@github.com:samybob1/meteor-redux-middlewares.git",
     "type": "git"
   },
-  "author": "Samy Laumonier <samy.laumonier@gmail.com>",
+  "author": "Samy Laumonier <samy.laumonier@gmail.com> (https://github.com/samybob1)",
+  "contributors": [
+    "Kyle Chamberlain <kchamb3@gmail.com> (https://github.com/Koleok)"
+  ],
   "license": "MIT",
   "keywords": [
     "action",
@@ -18,15 +21,23 @@
     "subscription",
     "tracker"
   ],
+  "homepage": "https://github.com/samybob1/meteor-redux-middlewares",
+  "bugs": {
+    "url": "https://github.com/samybob1/meteor-redux-middlewares/issues",
+    "email": "samy.laumonier@gmail.com"
+  },
   "scripts": {
+    "test:watch": "npm test -- --watch",
+    "test": "./node_modules/.bin/jest",
     "lint": "./node_modules/.bin/eslint .",
     "clean": "./node_modules/.bin/rimraf lib",
-    "build": "npm run clean && ./node_modules/.bin/babel src -d lib --copy-files",
+    "build": "npm run clean && ./node_modules/.bin/babel src --out-dir lib --ignore '**/*.spec.js'",
     "watch": "watch 'npm run build' src/ -d"
   },
   "devDependencies": {
     "babel-cli": "^6.18.0",
     "babel-core": "^6.18.0",
+    "babel-jest": "^16.0.0",
     "babel-polyfill": "^6.16.0",
     "babel-preset-es2015": "^6.18.0",
     "babel-preset-stage-2": "^6.18.0",
@@ -35,7 +46,14 @@
     "eslint-config-airbnb-base": "^9.0.0",
     "eslint-plugin-babel": "^3.3.0",
     "eslint-plugin-import": "^2.0.1",
+    "flux-standard-action": "^1.0.0",
+    "jest": "^16.0.2",
+    "redux": "^3.6.0",
+    "redux-mock-store": "^1.2.1",
     "rimraf": "^2.5.4"
+  },
+  "dependencies": {
+    "sanctuary": "^0.11.1"
   },
   "babel": {
     "presets": [

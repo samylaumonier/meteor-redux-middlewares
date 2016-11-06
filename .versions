@@ -6,5 +6,5 @@ meteor@1.2.17_1
 modules@0.7.6_1
 modules-runtime@0.7.6_1
 promise@0.8.7
-samy:redux-middlewares@2.0.3
+samy:redux-middlewares@2.0.4
 underscore@1.0.9
