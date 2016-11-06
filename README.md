@@ -188,7 +188,7 @@ If you need to pass some extra data to the reducer with the `subscriptions` midd
         extraKey1: 'extraValue1',
         extraKey2: 'extraValue2',
       }),
-    })
+    });
 ```
 
 Then in your reducer, you can access to the extra data by using the `payload.data` attribute;
