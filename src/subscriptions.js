@@ -3,7 +3,6 @@ import runContextual from './runContextual';
 import {
   STOP_SUBSCRIPTION,
   START_SUBSCRIPTION,
-  stopSubscription,
 } from './actions';
 
 import {
@@ -18,6 +17,18 @@ import {
 const subscriptions = {};
 const computations = {};
 
+const stopSubscription = action => {
+  if (subscriptions[action.payload]) {
+    const subscriptionId = subscriptions[action.payload].subscriptionId;
+
+    computations[subscriptionId].stop();
+    subscriptions[action.payload].stop();
+
+    delete computations[subscriptionId];
+    delete subscriptions[action.payload];
+  }
+};
+
 export default tracker => ({ dispatch }) => next => action => {
   const throwIfNot = errorWith(action);
 
@@ -27,18 +38,11 @@ export default tracker => ({ dispatch }) => next => action => {
         'A stopSubscription action needs a string payload to identify a subscription'
       );
 
-      if (subscriptions[action.payload]) {
-        const subscriptionId = subscriptions[action.payload].subscriptionId;
-
-        computations[subscriptionId].stop();
-        subscriptions[action.payload].stop();
-      }
+      stopSubscription(action);
     };
 
     runContextual(stop);
-  }
-
-  if (action.type === START_SUBSCRIPTION) {
+  } else if (action.type === START_SUBSCRIPTION) {
     const start = () => {
       throwIfNot(hasSubscribe,
         'A startSubscription action needs a `subscribe` function to start a subscription'
@@ -52,12 +56,9 @@ export default tracker => ({ dispatch }) => next => action => {
         'A startSubscription action needs a `get` function to load data'
       );
 
+      stopSubscription(action);
+
       const { key, subscribe } = action.payload;
-
-      if (subscriptions[key]) {
-        dispatch(stopSubscription(key));
-      }
-
       const subscription = subscribe();
       const { subscriptionId } = subscription;
 
