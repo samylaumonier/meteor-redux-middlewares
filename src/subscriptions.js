@@ -24,8 +24,8 @@ const stopSubscription = action => {
     computations[subscriptionId].stop();
     subscriptions[action.payload].stop();
 
-    delete computations[subscriptionId];
-    delete subscriptions[action.payload];
+    computations[subscriptionId] = undefined;
+    subscriptions[action.payload] = undefined;
   }
 };
 
