@@ -23,8 +23,12 @@ export const createAction =
 export const injectTracker =
   (tracker, middlewares) => middlewares.map(m => m(tracker));
 
-export const isBrowser =
-  () => typeof process === 'undefined';
+export const isBrowser = () =>
+  typeof process === 'undefined' || (
+    typeof process === 'object' &&
+    typeof process.versions === 'object' &&
+    typeof process.versions.node === 'undefined'
+  );
 
 export const errorWith = x => (f, msg) => {
   if (!f(x)) {
