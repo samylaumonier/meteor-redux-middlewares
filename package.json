@@ -1,6 +1,6 @@
 {
   "name": "meteor-redux-middlewares",
-  "version": "3.0.2",
+  "version": "3.0.3",
   "description": "Middlewares to sync meteor reactive sources with redux store",
   "main": "lib/index.js",
   "repository": {
