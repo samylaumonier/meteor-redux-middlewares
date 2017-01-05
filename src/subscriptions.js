@@ -1,5 +1,3 @@
-import run from './run';
-
 import {
   STOP_SUBSCRIPTION,
   START_SUBSCRIPTION,
@@ -41,7 +39,7 @@ export default tracker => ({ dispatch }) => next => action => {
       stopSubscription(action);
     };
 
-    run(stop);
+    setTimeout(stop);
   } else if (action.type === START_SUBSCRIPTION) {
     const start = () => {
       throwIfNot(hasSubscribe,
@@ -85,7 +83,7 @@ export default tracker => ({ dispatch }) => next => action => {
       });
     };
 
-    run(start);
+    setTimeout(start);
   }
 
   return next(action);

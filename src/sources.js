@@ -1,6 +1,5 @@
 import { REGISTER_REACTIVE_SOURCE } from './actions';
 import { actionCase, hasGet, hasSubscribe, hasKey, errorWith } from './utils';
-import run from './run';
 
 const computations = {};
 
@@ -35,7 +34,7 @@ export default tracker => ({ dispatch }) => next => action => {
       });
     };
 
-    run(register);
+    setTimeout(register);
   }
 
   return next(action);
