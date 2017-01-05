@@ -1,6 +1,6 @@
 import { REGISTER_REACTIVE_SOURCE } from './actions';
 import { actionCase, hasGet, hasSubscribe, hasKey, errorWith } from './utils';
-import runContextual from './runContextual';
+import run from './run';
 
 const computations = {};
 
@@ -8,7 +8,7 @@ export default tracker => ({ dispatch }) => next => action => {
   const throwIfNot = errorWith(action);
 
   if (action.type === REGISTER_REACTIVE_SOURCE) {
-    const run = () => {
+    const register = () => {
       throwIfNot(hasKey,
         'A registerReactiveSource action needs a `key` string to identify tracked source'
       );
@@ -35,7 +35,7 @@ export default tracker => ({ dispatch }) => next => action => {
       });
     };
 
-    runContextual(run);
+    run(register);
   }
 
   return next(action);

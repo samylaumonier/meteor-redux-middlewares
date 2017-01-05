@@ -1,4 +1,4 @@
-import runContextual from './runContextual';
+import run from './run';
 
 import {
   STOP_SUBSCRIPTION,
@@ -41,7 +41,7 @@ export default tracker => ({ dispatch }) => next => action => {
       stopSubscription(action);
     };
 
-    runContextual(stop);
+    run(stop);
   } else if (action.type === START_SUBSCRIPTION) {
     const start = () => {
       throwIfNot(hasSubscribe,
@@ -85,7 +85,7 @@ export default tracker => ({ dispatch }) => next => action => {
       });
     };
 
-    runContextual(start);
+    run(start);
   }
 
   return next(action);
