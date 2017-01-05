@@ -4,7 +4,6 @@ import {
   createAction,
   has,
   injectTracker,
-  isBrowser,
 } from './utils';
 
 describe('#actionCase', () => {
