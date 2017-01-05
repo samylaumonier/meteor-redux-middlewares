@@ -1,0 +1,16 @@
+{
+  "collectCoverage": true,
+  "coverageThreshold": {
+    "global": {
+      "branches": 77.78,
+      "functions": 100,
+      "lines": 98.57,
+      "statements": 98.78
+    }
+  },
+  "testEnvironment": "node",
+  "testPathDirs": [
+    "src/"
+  ],
+  "timers": "fake"
+}

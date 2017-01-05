@@ -1,4 +1,4 @@
-exports[`test should fire in the correct sequence 1`] = `
+exports[`sources middleware should fire in the correct sequence 1`] = `
 Array [
   "i got me data!",
   "my computation be stopped now!",
@@ -6,17 +6,9 @@ Array [
 ]
 `;
 
-exports[`test should handle a registerReactiveSource action 1`] = `
+exports[`sources middleware should handle a registerReactiveSource action 1`] = `
 Array [
   Object {
-    "payload": Array [
-      Object {
-        "id": "treasure",
-      },
-    ],
-    "type": "MATES_REACTIVE_SOURCE_CHANGED",
-  },
-  Object {
     "meta": Object {},
     "payload": Object {
       "get": [Function],
@@ -39,6 +31,14 @@ Array [
       "key": "mates",
     },
     "type": "REGISTER_REACTIVE_SOURCE",
+  },
+  Object {
+    "payload": Array [
+      Object {
+        "id": "treasure",
+      },
+    ],
+    "type": "MATES_REACTIVE_SOURCE_CHANGED",
   },
 ]
 `;
