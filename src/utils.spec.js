@@ -4,7 +4,6 @@ import {
   createAction,
   has,
   injectTracker,
-  isBrowser,
 } from './utils';
 
 describe('#actionCase', () => {
@@ -64,12 +63,5 @@ describe('#injectTracker', () => {
 
   it('should pass tracker to each middleware', () => {
     expect(injectTracker(tracker, middlewares)).toEqual(expected);
-  });
-});
-
-describe('#isBrowser', () => {
-  // This should always be false in jest env (node)
-  it('should be true', () => {
-    expect(isBrowser()).toBe(false);
   });
 });
