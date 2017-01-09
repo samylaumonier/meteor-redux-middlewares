@@ -1,3 +1,5 @@
+# meteor-redux-middlewares [![Build Status](https://travis-ci.org/samybob1/meteor-redux-middlewares.svg?branch=master)](https://travis-ci.org/samybob1/meteor-redux-middlewares)
+
 Middlewares to sync meteor reactive sources with redux store.
 
 - [Live demo](https://meteor-redux-middlewares-demo.herokuapp.com)
