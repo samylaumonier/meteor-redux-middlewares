@@ -21,11 +21,11 @@ module.exports = () => {
     return treasure;
   }
 
-  function subscribe() {
+  function subscribe(ready) {
     results.push('yarg, i subscribed!');
     return {
       subscriptionId: 1,
-      ready: () => true,
+      ready: () => ready,
       stop: () => results.push('my subscription be stopped now!'),
     };
   }

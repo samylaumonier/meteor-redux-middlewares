@@ -1,3 +1,14 @@
+exports[`subscriptions middleware should fire in the correct sequence (without ready data) 1`] = `
+Array [
+  "yarg, i subscribed!",
+  "i got me data!",
+  "yarg, i subscribed!",
+  "i got me data!",
+  "my computation be stopped now!",
+  "my subscription be stopped now!",
+]
+`;
+
 exports[`subscriptions middleware should fire in the correct sequence 1`] = `
 Array [
   "yarg, i subscribed!",
@@ -8,6 +19,48 @@ Array [
   "im ready, but me eyepatch is lost",
   "my computation be stopped now!",
   "my subscription be stopped now!",
+]
+`;
+
+exports[`subscriptions middleware should handle a startSubscription action (subscription never ready) 1`] = `
+Array [
+  Object {
+    "meta": Object {},
+    "payload": Object {
+      "get": [Function],
+      "key": "mates",
+      "subscribe": [Function],
+    },
+    "type": "START_SUBSCRIPTION",
+  },
+  Object {
+    "payload": Object {
+      "data": Object {},
+      "ready": false,
+    },
+    "type": "MATES_SUBSCRIPTION_READY",
+  },
+  Object {
+    "meta": Object {},
+    "payload": Object {
+      "get": [Function],
+      "key": "mates",
+      "subscribe": [Function],
+    },
+    "type": "START_SUBSCRIPTION",
+  },
+  Object {
+    "payload": Object {
+      "data": Object {},
+      "ready": false,
+    },
+    "type": "MATES_SUBSCRIPTION_READY",
+  },
+  Object {
+    "meta": Object {},
+    "payload": "mates",
+    "type": "STOP_SUBSCRIPTION",
+  },
 ]
 `;
 

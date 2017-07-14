@@ -44,6 +44,10 @@ describe('#createAction', () => {
   });
 
   describe('resulting action is FSA compliant when passed', () => {
+    it('no arg', () => {
+      fsaCompliant(action());
+    });
+
     it('1 arg (payload only)', () => {
       fsaCompliant(action(1));
     });

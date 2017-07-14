@@ -2,10 +2,10 @@
   "collectCoverage": true,
   "coverageThreshold": {
     "global": {
-      "branches": 77.78,
+      "branches": 100,
       "functions": 100,
-      "lines": 98.55,
-      "statements": 98.77
+      "lines": 100,
+      "statements": 100
     }
   },
   "testEnvironment": "node",
