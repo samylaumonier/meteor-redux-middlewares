@@ -55,10 +55,10 @@ export default tracker => ({ dispatch }) => next => action => {
       );
 
       const { key, subscribe } = action.payload;
+      stopSubscription(key);
+
       const subscription = subscribe();
       const { subscriptionId } = subscription;
-
-      stopSubscription(key);
 
       subscriptions[key] = subscription;
       computations[subscriptionId] = tracker.autorun(() => {
