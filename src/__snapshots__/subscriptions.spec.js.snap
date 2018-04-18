@@ -2,6 +2,8 @@ exports[`subscriptions middleware should fire in the correct sequence (without r
 Array [
   "yarg, i subscribed!",
   "i got me data!",
+  "my computation be stopped now!",
+  "my subscription be stopped now!",
   "yarg, i subscribed!",
   "i got me data!",
   "my computation be stopped now!",
@@ -14,6 +16,8 @@ Array [
   "yarg, i subscribed!",
   "i got me data!",
   "im ready, but me eyepatch is lost",
+  "my computation be stopped now!",
+  "my subscription be stopped now!",
   "yarg, i subscribed!",
   "i got me data!",
   "im ready, but me eyepatch is lost",
