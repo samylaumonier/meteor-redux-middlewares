@@ -2,7 +2,7 @@
 
 Package.describe({
   name: 'samy:redux-middlewares',
-  version: '3.0.6',
+  version: '3.0.7',
   summary: 'Middlewares to sync meteor reactive sources with redux store',
   git: 'https://github.com/samybob1/meteor-redux-middlewares',
   documentation: 'README.md',
