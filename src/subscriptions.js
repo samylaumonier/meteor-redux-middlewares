@@ -15,15 +15,15 @@ import {
 const subscriptions = {};
 const computations = {};
 
-const stopSubscription = action => {
-  if (subscriptions[action.payload]) {
-    const subscriptionId = subscriptions[action.payload].subscriptionId;
+const stopSubscription = key => {
+  if (subscriptions[key]) {
+    const subscriptionId = subscriptions[key].subscriptionId;
 
     computations[subscriptionId].stop();
-    subscriptions[action.payload].stop();
+    subscriptions[key].stop();
 
     computations[subscriptionId] = undefined;
-    subscriptions[action.payload] = undefined;
+    subscriptions[key] = undefined;
   }
 };
 
@@ -36,7 +36,7 @@ export default tracker => ({ dispatch }) => next => action => {
         'A stopSubscription action needs a string payload to identify a subscription'
       );
 
-      stopSubscription(action);
+      stopSubscription(action.payload);
     };
 
     setTimeout(stop);
@@ -54,9 +54,9 @@ export default tracker => ({ dispatch }) => next => action => {
         'A startSubscription action needs a `get` function to load data'
       );
 
-      stopSubscription(action);
-
       const { key, subscribe } = action.payload;
+      stopSubscription(key);
+
       const subscription = subscribe();
       const { subscriptionId } = subscription;
 
